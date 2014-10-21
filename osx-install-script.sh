@@ -81,6 +81,7 @@ apps=(
 	air-video-server
 	airserver
 	alfred
+	bartender
 	bbedit
 	dropbox
 	eclipse-java
