@@ -1,5 +1,15 @@
 #!/bin/sh
 
+###############################################################################
+# init stuff                                                                  #
+###############################################################################
+
+# ask for sudo
+sudo -v
+
+# keep sudo alive
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
 # ~/.profile from http://furbo.org/2014/09/03/the-terminal/
 echo '
 alias ll="ls -lahL"
@@ -17,6 +27,10 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:~/bin"
 
 # first, install xcode command line dev tools
 xcode-select --install
+
+###############################################################################
+# Brew stuff                                                                  #
+###############################################################################
 
 # then, brew
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -38,6 +52,7 @@ brew install tree
 brew install wget
 brew install nmap
 brew install youtube-dl
+brew install htop
 
 brew install fish
 brew cleanup
@@ -46,6 +61,9 @@ brew doctor
 # config git
 git config --global user.name "Vishnu Prem"
 git config --global user.email "vishnu@vishnuprem.com"
+
+# config bash
+sudo -s 'echo "/usr/local/bin/bash" >> /etc/shells'
 
 # config fish
 sudo -s 'echo "/usr/local/bin/fish" >> /etc/shells'
@@ -64,9 +82,9 @@ apps=(
 	airserver
 	alfred
 	bbedit
-	dash
 	dropbox
 	eclipse-java
+	fantastical
 	firefox
 	flux
 	github
@@ -74,6 +92,7 @@ apps=(
 	hazel
 	hipchat
 	intellij-idea
+	java
 	mailbox
 	omnifocus
 	onepassword
@@ -109,15 +128,29 @@ brew cask cleanup
 brew cask alfred link
 
 ###############################################################################
+# Dev stuff                                                                   #
+###############################################################################
+
+# making a new ssh key for github
+ssh-keygen -t rsa -C "vishnu@vishnuprem.com" -f "/Users/vishnu/.ssh/id_github"
+ssh-add ~/.ssh/id_github
+cat ~/.ssh/id_github.pub | pbcopy
+echo "A new SSH key for github had been generated and copied to your clipboard\n
+Please login to Github now and add this key, then press any key to continue"
+read
+
+# make dev folder
+mkdir ~/dev/
+cd ~/dev/
+mkdir objc
+
+# install cocoapods
+sudo gem install cocoapods
+
+###############################################################################
 # Tweaks                                                               		  #
 # Adapted from https://github.com/mathiasbynens/dotfiles/blob/master/.osx     #
 ###############################################################################
-
-# ask for sudo
-sudo -v
-
-# keep sudo alive
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # set computer name
 name="$(scutil --get ComputerName)"
@@ -153,11 +186,20 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool
 defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 
-# Set a blazingly fast keyboard repeat rate
-defaults write NSGlobalDomain KeyRepeat -int 0
+# Mouse tracking speed
+defaults write -g com.apple.mouse.scaling 1.5
+
+# Set a faster keyboard repeat rate
+defaults write NSGlobalDomain KeyRepeat -int 2
+
+# Set a short delay until repeat
+defaults write NSGlobalDomain InitialKeyRepeat -int 20
 
 # enabling full keyboard access for all controls
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+
+# Disable interface sound
+defaults write "com.apple.systemsound" "com.apple.sound.uiaudio.enabled" -int 0
 
 ###############################################################################
 # Screen                                                                      #
@@ -176,10 +218,16 @@ defaults write com.apple.dashboard mcx-disabled -bool true
 # Automatically hide and show the Dock
 defaults write com.apple.dock autohide -bool true
 
+# Change minimize/maximize window effect
+defaults write com.apple.dock mineffect -string "scale"
+
+# Don't show indicator 	lights for open applications in the Dock
+defaults write com.apple.dock show-process-indicators -bool false
+
 # Hot corners
 # Possible values:
 #  0: no-op
-#  2: Mission Control
+#  2: Mission Control  sssss
 #  3: Show application windows
 #  4: Desktop
 #  5: Start screen saver
@@ -188,12 +236,12 @@ defaults write com.apple.dock autohide -bool true
 # 10: Put display to sleep
 # 11: Launchpad
 # 12: Notification Center
-# Top left screen corner → Mission Control
-defaults write com.apple.dock wvous-tl-corner -int 2
+# Top left screen corner → Disable screen saver
+defaults write com.apple.dock wvous-tl-corner -int 5
 defaults write com.apple.dock wvous-tl-modifier -int 0
-# Top right screen corner → Desktop
-defaults write com.apple.dock wvous-tr-corner -int 4
-defaults write com.apple.dock wvous-tr-modifier -int 0
+# Bottom right screen corner → Desktop
+defaults write com.apple.dock wvous-br-corner -int 4
+defaults write com.apple.dock wvous-br-modifier -int 0
 # Bottom left screen corner → Put display to sleep
 defaults write com.apple.dock wvous-bl-corner -int 10
 defaults write com.apple.dock wvous-bl-modifier -int 0
@@ -211,9 +259,13 @@ defaults write com.apple.finder ShowPathbar -bool true
 # Show the ~/Library folder
 chflags nohidden ~/Library
 
+###############################################################################
+# Kill affected applications                                                  #
+###############################################################################
+
+for app in "Dock" "Finder" "SystemUIServer" "Terminal"; do
+	killall "${app}" > /dev/null 2>&1
+done
+echo "Done. Note that some of these changes require a logout/restart to take effect."
+
 echo "Don't forget to go to your AppStore purchases tab and download a bunch of your stuff"
-
-# dev stuff
-
-# install cocoapods
-sudo gem install cocoapods
