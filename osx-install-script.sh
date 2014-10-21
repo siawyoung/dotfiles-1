@@ -53,8 +53,12 @@ brew install wget
 brew install nmap
 brew install youtube-dl
 brew install htop
-
 brew install fish
+
+# tapping dupes so that we can replace OSX's screen(4.0.0) with screen 4.2.1 and above
+brew tap homebrew/dupes
+brew install screen
+
 brew cleanup
 brew doctor
 
