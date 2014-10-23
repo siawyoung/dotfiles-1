@@ -84,6 +84,7 @@ apps=(
 	intellij-idea
 	java
 	mailbox
+	mou
 	omnifocus
 	onepassword
 	quickcast
