@@ -40,16 +40,12 @@ brew install youtube-dl
 brew install htop
 brew install fish
 
-# tapping dupes so that we can replace OSX's screen(4.0.0) with screen 4.2.1 and above
-brew tap homebrew/dupes
-brew install screen
-
 brew cleanup
 brew doctor
 
 # config git
-git config --global user.name "Vishnu Prem"
-git config --global user.email "vishnu@vishnuprem.com"
+git config --global user.name "Lau Siaw Young"
+git config --global user.email "lausiawyoung@gmail.com"
 
 # config bash
 sudo -s 'echo "/usr/local/bin/bash" >> /etc/shells'
@@ -66,30 +62,19 @@ brew install caskroom/cask/brew-cask
 
 # cask apps
 apps=(
-	acorn
-	air-video-server-hd
-	airserver
 	alfred
 	bartender
-	bbedit
 	dropbox
 	eclipse-java
 	fantastical
 	firefox
 	flux
-	github
 	google-chrome
-	hazel
-	hipchat
 	java
-	mailbox
-	mou
+	karabiner
 	omnifocus
 	onepassword
-	quickcast
 	quicklook-json
-	rescuetime
-	screens-connect
 	sketch
 	skype
 	slack
@@ -100,14 +85,10 @@ apps=(
 	sublime-text3
 	superduper
 	textexpander
-	textmate
-	things
 	transmission
 	transmit
-	vagrant
 	vlc
 	vmware-fusion
-	xscope
 )
 
 # cask apps to /Applications
@@ -123,20 +104,12 @@ brew cask alfred link
 ###############################################################################
 
 # making a new ssh key for github
-ssh-keygen -t rsa -C "vishnu@vishnuprem.com" -f "/Users/vishnu/.ssh/id_github"
+ssh-keygen -t rsa -C "lausiawyoung@gmail.com" -f "/Users/siawyoung/.ssh/id_github"
 ssh-add ~/.ssh/id_github
 cat ~/.ssh/id_github.pub | pbcopy
 echo "A new SSH key for github had been generated and copied to your clipboard\n
 Please login to Github now and add this key, then press any key to continue"
 read
-
-# make dev folder
-mkdir ~/dev/
-cd ~/dev/
-mkdir objc
-
-# install cocoapods
-sudo gem install cocoapods
 
 ###############################################################################
 # Tweaks                                                               		  #
