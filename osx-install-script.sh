@@ -78,7 +78,7 @@ brew install caskroom/cask/brew-cask
 # cask apps
 apps=(
 	acorn
-	air-video-server
+	air-video-server-hd
 	airserver
 	alfred
 	bartender
@@ -92,7 +92,6 @@ apps=(
 	google-chrome
 	hazel
 	hipchat
-	intellij-idea
 	java
 	mailbox
 	omnifocus
@@ -104,6 +103,7 @@ apps=(
 	sketch
 	skype
 	slack
+	soulver
 	sourcetree
 	spectacle
 	spotify
