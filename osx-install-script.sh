@@ -10,21 +10,6 @@ sudo -v
 # keep sudo alive
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-# ~/.profile from http://furbo.org/2014/09/03/the-terminal/
-echo '
-alias ll="ls -lahL"
-alias con="tail -40 -f /var/log/system.log"
-alias dev="cd ~/dev/"
-
-bind '"\e[A":history-search-backward'
-bind '"\e[B":history-search-forward'
-
-export EDITOR="vim"
-export CLICOLOR=1
-export XCODE="`xcode-select --print-path`"
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:~/bin"
-' >> ~/.profile
-
 # first, install xcode command line dev tools
 xcode-select --install
 
@@ -53,8 +38,12 @@ brew install wget
 brew install nmap
 brew install youtube-dl
 brew install htop
-
 brew install fish
+
+# tapping dupes so that we can replace OSX's screen(4.0.0) with screen 4.2.1 and above
+brew tap homebrew/dupes
+brew install screen
+
 brew cleanup
 brew doctor
 
@@ -94,6 +83,7 @@ apps=(
 	hipchat
 	java
 	mailbox
+	mou
 	omnifocus
 	onepassword
 	quickcast
